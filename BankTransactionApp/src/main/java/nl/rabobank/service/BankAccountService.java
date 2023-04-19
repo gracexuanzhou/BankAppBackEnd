@@ -25,7 +25,7 @@ public interface BankAccountService {
 
     BankAccount addTransactionToBankAccount(Long bankAccountId, Transaction transaction);
 
-    BankAccount addBankAccountToCustomer(Customer customer, Long bankAccountId);
+    //BankAccount addBankAccountToCustomer(Customer customer, Long bankAccountId);
 
     List<BankAccount> findAllBankAccountByCustomerId(Long customerId);
 }

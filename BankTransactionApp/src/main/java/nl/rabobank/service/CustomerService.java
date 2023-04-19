@@ -22,5 +22,5 @@ public interface CustomerService {
 
     void setCustomerRepository(CustomerRepository customerRepository);
 
-    Customer addBankAccountToCustomer(Long customerID, BankAccount bankAccount);
+    //Customer addBankAccountToCustomer(Long customerID, BankAccount bankAccount);
 }

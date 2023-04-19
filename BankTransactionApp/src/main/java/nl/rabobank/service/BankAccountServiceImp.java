@@ -30,8 +30,8 @@ public class BankAccountServiceImp implements BankAccountService {
         if(bankAccount.getId() != null){
             throw new InvalidPropertyState("id does not have to be set for new bank Account");
            }
-        Customer customer = bankAccount.getCustomer();
-        addBankAccountToCustomer(customer,bankAccount.getId());
+       // Customer customer = bankAccount.getCustomer();
+        //addBankAccountToCustomer(customer,bankAccount.getId());
         return bankAccoutRepository.save(bankAccount);
         }
 
@@ -88,13 +88,6 @@ public class BankAccountServiceImp implements BankAccountService {
                 .orElseThrow(() -> new InvalidPropertyState("bankAccount id not find"));
     }
 
-    @Override
-    public BankAccount addBankAccountToCustomer(Customer customer, Long bankAccountId) {
-        BankAccount bankAccount = getBankAccountById(bankAccountId) ;
-        customer.getBankAccount().add(bankAccount);
-        bankAccount.setCustomer(customer);
-        return bankAccoutRepository.save(bankAccount);
-    }
 
     public List<BankAccount> findAllBankAccountByCustomerId(Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidPropertyState("Customer id not find"));

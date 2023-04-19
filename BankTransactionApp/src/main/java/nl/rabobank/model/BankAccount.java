@@ -23,11 +23,7 @@ public class BankAccount {
     @Column(name = "balance")
     private BigDecimal balance;
 
-
-
-    @JsonIgnoreProperties("bankAccount")
-    @JsonIgnore
-    @JoinColumn(name = "customer_id")
+    @Column(name = "customer_id")
     private Long customerId;
 
     public Long getCustomerId() {
@@ -38,10 +34,6 @@ public class BankAccount {
         this.customerId = customerId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("bankAccount")
-    @JsonIgnore
-    private Customer customer;
 
 
     @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -51,11 +43,12 @@ public class BankAccount {
 
     public BankAccount(){}
 
-    public BankAccount(Long id, String iban, BigDecimal balance, Customer customer){
+    public BankAccount(Long id, String iban, BigDecimal balance, Long customerId){
         this.id = id;
         this.iban = iban;
         this.balance = balance;
-        this.customer = customer;
+        this.customerId = customerId;
+        //this.customerId = customerId;
     }
 
 
@@ -84,13 +77,13 @@ public class BankAccount {
     }
 
 
-    public Customer getCustomer() {
+    /*public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
+    }*/
 
     public List<Transaction> getTransactionList() {
         return transactionList;

@@ -9,7 +9,8 @@ INSERT INTO categories(name) VALUES ('Entertainment');
 INSERT INTO categories(name) VALUES ('Salary');
 INSERT INTO categories(name) VALUES ('Others');
 
-INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX123',1,1);
+INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX123',1);
 
+INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX1223',1);
 INSERT INTO transactions(date, incoming_amount, outgoing_amount, bank_account_id, category_id)
 VALUES ('2022-04-01 12:30:00',0,12,1,1);

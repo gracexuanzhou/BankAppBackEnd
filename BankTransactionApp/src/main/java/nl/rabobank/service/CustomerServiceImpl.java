@@ -69,11 +69,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void setCustomerRepository(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-    @Override
+   /* @Override
     public Customer addBankAccountToCustomer(Long customerID, BankAccount bankAccount){
        Customer customer = getCustomerById(customerID);
        customer.getBankAccount().add(bankAccount);
        bankAccount.setCustomer(customer);
        return  customerRepository.save(customer);
-    }
+    }*/
 }

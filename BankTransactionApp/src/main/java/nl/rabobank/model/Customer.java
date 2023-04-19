@@ -31,7 +31,7 @@ public class Customer {
     private String password;
 
     //fetch = FetchType, 及时加载的意思。在此例子中表示加载customer的实体的时候同时立即加载与之相关的bankaccount实体。
-    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("customer")
     @JsonIgnore
     private List<BankAccount> bankAccount = new ArrayList<>();
@@ -41,14 +41,14 @@ public class Customer {
     public Customer(){}
 
     public Customer (Long customerId,String username,String password, String firstName, String
-                     lastName, String email, List<BankAccount> bankAccount){
-            this.customerId = customerId;
-            this.username = username;
-            this.password = password;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.email = email;
-            this.bankAccount = bankAccount;
+            lastName, String email){
+        this.customerId = customerId;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        //this.bankAccount = bankAccount;
     }
 
     public List<BankAccount> getBankAccount() {
