@@ -17,9 +17,4 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     List<Customer> findAll();
 
-    default Customer addBankAccountToCustomer(Customer customer, BankAccount bankAccount) {
-        customer.getBankAccount().add(bankAccount);
-        bankAccount.setCustomer(customer);
-        return save(customer);
-    }
 }

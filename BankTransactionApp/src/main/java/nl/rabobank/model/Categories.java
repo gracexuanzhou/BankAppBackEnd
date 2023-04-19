@@ -10,17 +10,25 @@ public class Categories {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long category_id;
+    private Long categoryId;
 
     @Column(name = "name")
     private String name;
 
-    public Long getCategory_id() {
-        return category_id;
+    public Categories(){}
+
+    public Categories(Long categoryId, String name){
+        this.categoryId = categoryId;
+        this.name = name;
     }
 
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {

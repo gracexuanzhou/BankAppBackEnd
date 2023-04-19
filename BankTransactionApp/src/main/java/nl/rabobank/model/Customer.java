@@ -31,7 +31,7 @@ public class Customer {
     private String password;
 
     //fetch = FetchType, 及时加载的意思。在此例子中表示加载customer的实体的时候同时立即加载与之相关的bankaccount实体。
-    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("customer")
     @JsonIgnore
     private List<BankAccount> bankAccount = new ArrayList<>();

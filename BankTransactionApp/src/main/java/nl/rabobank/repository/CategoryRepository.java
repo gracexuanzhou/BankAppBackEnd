@@ -1,0 +1,9 @@
+package nl.rabobank.repository;
+
+import nl.rabobank.model.BankAccount;
+import nl.rabobank.model.Categories;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Categories,Long> {
+    Categories findByNameIgnoreCase(String name);
+}
