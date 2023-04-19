@@ -27,17 +27,15 @@ public class BankAccountServiceImp implements BankAccountService {
 
     @Override
     public BankAccount createBankAccount(BankAccount bankAccount){
-        if(bankAccount.getId() != null){
+        if(bankAccount.getBankAccountId() != null){
             throw new InvalidPropertyState("id does not have to be set for new bank Account");
            }
-        Customer customer = bankAccount.getCustomer();
-        addBankAccountToCustomer(customer,bankAccount.getId());
         return bankAccoutRepository.save(bankAccount);
         }
 
     @Override
     public void update(BankAccount bankAccount) {
-        if (bankAccount.getId() == null) {
+        if (bankAccount.getBankAccountId() == null) {
             throw new InvalidPropertyState("id has to be set");
         }
         bankAccoutRepository.save(bankAccount);
@@ -72,7 +70,8 @@ public class BankAccountServiceImp implements BankAccountService {
     public BankAccount addTransactionToBankAccount(Long bankAccountId, Transaction transaction) {
         BankAccount bankAccount = bankAccoutRepository.findById(bankAccountId)
                 .orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));
-        transaction.setBankAccount(bankAccount);
+        //transaction.setBankAccount(bankAccount);
+        transaction.setBankAccountId(bankAccountId);
         bankAccount.getTransactionList().add(transaction);
 
         if (transaction.getIncomingAmount() != null) {
@@ -88,13 +87,6 @@ public class BankAccountServiceImp implements BankAccountService {
                 .orElseThrow(() -> new InvalidPropertyState("bankAccount id not find"));
     }
 
-    @Override
-    public BankAccount addBankAccountToCustomer(Customer customer, Long bankAccountId) {
-        BankAccount bankAccount = getBankAccountById(bankAccountId) ;
-        customer.getBankAccount().add(bankAccount);
-        bankAccount.setCustomer(customer);
-        return bankAccoutRepository.save(bankAccount);
-    }
 
     public List<BankAccount> findAllBankAccountByCustomerId(Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidPropertyState("Customer id not find"));

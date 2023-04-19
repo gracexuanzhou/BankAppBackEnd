@@ -16,7 +16,8 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private Long bankAccountId;
     @Column(name = "iban")
     private String iban;
 
@@ -27,7 +28,7 @@ public class BankAccount {
 
     @JsonIgnoreProperties("bankAccount")
     @JsonIgnore
-    @JoinColumn(name = "customer_id")
+    @Column(name = "customer_id")
     private Long customerId;
 
     public Long getCustomerId() {
@@ -38,24 +39,19 @@ public class BankAccount {
         this.customerId = customerId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("bankAccount")
-    @JsonIgnore
-    private Customer customer;
 
-
-    @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     private List<Transaction> transactionList = new ArrayList<>();
 
     public BankAccount(){}
 
-    public BankAccount(Long id, String iban, BigDecimal balance, Customer customer){
-        this.id = id;
+    public BankAccount(Long bankAccountId, String iban, BigDecimal balance, Long customerId){
+        this.bankAccountId = bankAccountId;
         this.iban = iban;
         this.balance = balance;
-        this.customer = customer;
+        this.customerId = customerId;
     }
 
 
@@ -75,22 +71,14 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public Long getId() {
-        return id;
+    public Long getBankAccountId() {
+        return bankAccountId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBankAccountId(Long bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public List<Transaction> getTransactionList() {
         return transactionList;

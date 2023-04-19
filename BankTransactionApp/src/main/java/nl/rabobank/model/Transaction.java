@@ -35,35 +35,35 @@ public class Transaction {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bank_account_id")
-    @JsonIgnore
-    private BankAccount bankAccount;
+    @Column(name = "bank_account_id")
+    private Long bankAccountId;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    @JsonIgnore
-    private Categories categories;
+    @Column(name = "category_id")
+    private Long categoryId;
+
+    @Column(name = "description")
+    private String description;
 
     public Transaction(){
     }
 
-    public Transaction(Long id, BigDecimal incomingAmount, BigDecimal outgoingAmount, LocalDateTime date, BankAccount bankAccount,
-    Categories categories){
+    public Transaction(Long id, BigDecimal incomingAmount, BigDecimal outgoingAmount, LocalDateTime date,
+                       Long bankAccountId, Long categoryId, String description){
         this.id = id;
         this.incomingAmount = incomingAmount;
         this.outgoingAmount = outgoingAmount;
         this.date = date;
-        this.bankAccount = bankAccount;
-        this.categories = categories;
+        this.bankAccountId = bankAccountId;
+        this.categoryId = categoryId;
+        this.description = description;
     }
 
-    public Categories getCategories() {
-        return categories;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategories(Categories categories) {
-        this.categories = categories;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getId() {
@@ -98,12 +98,19 @@ public class Transaction {
         this.date = date;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
+    public Long getBankAccountId() {
+        return bankAccountId;
     }
 
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setBankAccountId(Long bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 }

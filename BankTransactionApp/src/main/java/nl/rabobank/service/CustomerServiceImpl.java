@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.deleteById(customerId);
         List<BankAccount> bankAccounts = customer.getBankAccount();
         for(BankAccount bankAccount: bankAccounts){
-            bankAccountRepository.deleteById(bankAccount.getId());
+            bankAccountRepository.deleteById(bankAccount.getBankAccountId());
         }
     }
 
@@ -69,11 +69,5 @@ public class CustomerServiceImpl implements CustomerService {
     public void setCustomerRepository(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-    @Override
-    public Customer addBankAccountToCustomer(Long customerID, BankAccount bankAccount){
-       Customer customer = getCustomerById(customerID);
-       customer.getBankAccount().add(bankAccount);
-       bankAccount.setCustomer(customer);
-       return  customerRepository.save(customer);
-    }
+
 }
