@@ -23,7 +23,7 @@ public interface BankAccountService {
 
     void setBankAccoutRepository(BankAccountRepository bankAccoutRepository);
 
-    BankAccount addTransactionToBankAccount(Long bankAccountId, Transaction transaction);
+    //BankAccount addTransactionToBankAccount(Long bankAccountId, Transaction transaction);
 
    // BankAccount addBankAccountToCustomer(Long customerId, Long bankAccountId);
 

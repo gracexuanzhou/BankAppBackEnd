@@ -66,21 +66,6 @@ public class BankAccountServiceImp implements BankAccountService {
         this.bankAccoutRepository = bankAccoutRepository;
     }
 
-    @Override
-    public BankAccount addTransactionToBankAccount(Long bankAccountId, Transaction transaction) {
-        BankAccount bankAccount = bankAccoutRepository.findById(bankAccountId)
-                .orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));
-        //transaction.setBankAccount(bankAccount);
-        transaction.setBankAccountId(bankAccountId);
-        bankAccount.getTransactionList().add(transaction);
-
-        if (transaction.getIncomingAmount() != null) {
-            bankAccount.setBalance(bankAccount.getBalance().add(transaction.getIncomingAmount()));
-        } else if (transaction.getOutgoingAmount() != null) {
-            bankAccount.setBalance(bankAccount.getBalance().subtract(transaction.getOutgoingAmount()));
-        }
-        return bankAccoutRepository.save(bankAccount);
-    }
 
     public BankAccount getBankAccountById(Long bankAccountId){
         return bankAccoutRepository.findById(bankAccountId)

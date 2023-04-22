@@ -41,7 +41,7 @@ public class Customer {
     public Customer(){}
 
     public Customer (Long customerId,String username,String password, String firstName, String
-                     lastName, String email, List<BankAccount> bankAccount){
+                     lastName, String email,List<BankAccount> bankAccount){
             this.customerId = customerId;
             this.username = username;
             this.password = password;
@@ -50,6 +50,7 @@ public class Customer {
             this.email = email;
             this.bankAccount = bankAccount;
     }
+
 
     public List<BankAccount> getBankAccount() {
         return bankAccount;

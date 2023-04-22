@@ -1,6 +1,7 @@
 package nl.rabobank.controller;
 
 import nl.rabobank.InvalidPropertyState;
+import nl.rabobank.model.BankAccount;
 import nl.rabobank.model.Customer;
 import nl.rabobank.model.Transaction;
 import nl.rabobank.service.CustomerService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,11 @@ public class TransactionController {
     public ResponseEntity<Transaction> deleteById(@PathVariable Long id) {
         transactionService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/bankaccount/{bankAccountId}")
+    public List<Transaction> findAllTransactionByBankAccountId(@PathVariable Long bankAccountId) {
+        return transactionService.findAllTransactionByBankAccountId(bankAccountId);
     }
 
     @ExceptionHandler(InvalidPropertyState.class)
