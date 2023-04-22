@@ -43,7 +43,10 @@ public class BankAccount {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
+
     private List<Transaction> transactionList = new ArrayList<>();
+
+
 
     public BankAccount(){}
 

@@ -20,4 +20,6 @@ public interface TransactionService {
     TransactionRepository getTransactionRepository();
 
     void setTransactionRepository(TransactionRepository transactionRepository);
+
+    List<Transaction> findAllTransactionByBankAccountId(Long bankAccountId);
 }

@@ -23,6 +23,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    BankAccountRepository bankAccountRepository;
+
 
     @Override
     public Transaction createTransaction(Transaction transaction){
@@ -30,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new InvalidPropertyState("id does not have to be set for transaction");
         }
         categorizeTransaction(transaction);
+        addTransactionToBankAccount(transaction);
         return transactionRepository.save(transaction);
     }
     @Override
@@ -127,5 +131,20 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    public BankAccount addTransactionToBankAccount(Transaction transaction) {
+        BankAccount bankAccount = bankAccountRepository.findById(transaction.getBankAccountId())
+                .orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));
+        if (transaction.getIncomingAmount() != null) {
+            bankAccount.setBalance(bankAccount.getBalance().add(transaction.getIncomingAmount()));
+        } else if (transaction.getOutgoingAmount() != null) {
+            bankAccount.setBalance(bankAccount.getBalance().subtract(transaction.getOutgoingAmount()));
+        }
+        return bankAccountRepository.save(bankAccount);
+    }
+
+    public List<Transaction> findAllTransactionByBankAccountId(Long bankAccountId) {
+        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId).orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));;
+        return transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
+    }
 }
 

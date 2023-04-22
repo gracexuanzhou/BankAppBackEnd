@@ -16,4 +16,6 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     void deleteById(Long transactionId);
 
     List<Transaction> findAll();
+
+    List<Transaction> findAllTransactionByBankAccountId(Long bankAccountId);
 }
