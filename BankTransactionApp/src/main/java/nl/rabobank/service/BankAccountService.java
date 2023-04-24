@@ -5,6 +5,7 @@ import nl.rabobank.model.Customer;
 import nl.rabobank.model.Transaction;
 import nl.rabobank.repository.BankAccountRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,8 @@ public interface BankAccountService {
    // BankAccount addBankAccountToCustomer(Long customerId, Long bankAccountId);
 
     List<BankAccount> findAllBankAccountByCustomerId(Long customerId);
+
+    BigDecimal CountTotalIncomingAmountByCustomerId(Long customerId);
+    BigDecimal CountTotalOutgoingAmountByCustomerId(Long customerId);
+    BigDecimal CountTotalBalanceByCustomerId(Long customerId);
 }

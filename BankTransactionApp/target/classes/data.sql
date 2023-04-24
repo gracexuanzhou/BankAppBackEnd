@@ -1,4 +1,4 @@
-
+/*
 INSERT INTO transactions(date, incoming_amount, outgoing_amount, bank_account_id, category_id,description)
 VALUES ('2022-04-01 12:30:00',0,12,1,1,'car');
 
@@ -15,4 +15,4 @@ INSERT INTO categories(name) VALUES ('Others');
 
 INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX123',1);
 
-INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX1223',1);
+INSERT INTO bankaccounts(BALANCE, IBAN, CUSTOMER_ID) VALUES (0,'XXX1223',1);*/

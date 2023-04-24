@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,4 +69,20 @@ public class BankAccountController {
         error.put("message", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/incomingAmount/{customerId}")
+    public BigDecimal CountTotalIncomingAmountByCustomerId(@PathVariable Long customerId){
+        return  bankAccountService.CountTotalIncomingAmountByCustomerId(customerId);
+    }
+
+    @GetMapping("/outgoingAmount/{customerId}")
+    public BigDecimal CountTotalOutgoingAmountByCustomerId(@PathVariable Long customerId){
+        return  bankAccountService.CountTotalOutgoingAmountByCustomerId(customerId);
+    }
+
+    @GetMapping("/balance/{customerId}")
+    public BigDecimal CountTotalBalanceByCustomerId(@PathVariable Long customerId){
+        return  bankAccountService.CountTotalBalanceByCustomerId(customerId);
+    }
 }
+

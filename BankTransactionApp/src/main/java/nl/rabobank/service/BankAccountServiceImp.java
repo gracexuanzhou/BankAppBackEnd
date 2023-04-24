@@ -10,6 +10,7 @@ import nl.rabobank.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,44 @@ public class BankAccountServiceImp implements BankAccountService {
     public List<BankAccount> findAllBankAccountByCustomerId(Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new InvalidPropertyState("Customer id not find"));
         return bankAccoutRepository.findAllBankAccountByCustomerId(customer.getCustomerId());
+    }
+
+    public BigDecimal CountTotalIncomingAmountByCustomerId(Long customerId){
+        List<BankAccount> bankAccountList = bankAccoutRepository.findAllBankAccountByCustomerId(customerId);
+        BigDecimal totalIncomingAmount = BigDecimal.ZERO;
+        for (BankAccount bankAccount : bankAccountList) {
+            List<Transaction> transactionList = transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
+            for (Transaction transaction : transactionList) {
+                if (transaction.getIncomingAmount() != null) {
+                    totalIncomingAmount = totalIncomingAmount.add(transaction.getIncomingAmount());
+                }
+            }
+        }
+        return totalIncomingAmount;
+    }
+
+    public BigDecimal CountTotalOutgoingAmountByCustomerId(Long customerId){
+        List<BankAccount> bankAccountList = bankAccoutRepository.findAllBankAccountByCustomerId(customerId);
+        BigDecimal totalIncomingAmount = BigDecimal.ZERO;
+        BigDecimal totalOutgoingAmount = BigDecimal.ZERO;
+        for (BankAccount bankAccount : bankAccountList) {
+            List<Transaction> transactionList = transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
+            for (Transaction transaction : transactionList) {
+                if (transaction.getOutgoingAmount() != null) {
+                    totalOutgoingAmount = totalOutgoingAmount.add(transaction.getOutgoingAmount());
+                }
+            }
+        }
+        return totalOutgoingAmount;
+    }
+
+    public BigDecimal CountTotalBalanceByCustomerId(Long customerId){
+        List<BankAccount> bankAccountList = bankAccoutRepository.findAllBankAccountByCustomerId(customerId);
+        BigDecimal balance = BigDecimal.ZERO;
+        for (BankAccount bankAccount : bankAccountList) {
+           balance = balance.add(bankAccount.getBalance());
+        }
+        return balance;
     }
 
 
