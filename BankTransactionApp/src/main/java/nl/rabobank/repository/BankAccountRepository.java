@@ -4,6 +4,7 @@ import nl.rabobank.model.BankAccount;
 import nl.rabobank.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

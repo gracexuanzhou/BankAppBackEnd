@@ -32,8 +32,13 @@ public class TransactionServiceImpl implements TransactionService {
         if(transaction.getId() != null){
             throw new InvalidPropertyState("id does not have to be set for transaction");
         }
-        categorizeTransaction(transaction);
         addTransactionToBankAccount(transaction);
+        if(transaction.getDescription()!=null){
+            categorizeTransaction(transaction);
+        }
+        else {
+            transaction.setCategoryId(8L);
+        }
         return transactionRepository.save(transaction);
     }
     @Override
