@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class BankAccountServiceImp implements BankAccountService {
@@ -31,6 +32,7 @@ public class BankAccountServiceImp implements BankAccountService {
         if(bankAccount.getBankAccountId() != null){
             throw new InvalidPropertyState("id does not have to be set for new bank Account");
            }
+        bankAccount.setIban(generateIban());
         return bankAccoutRepository.save(bankAccount);
         }
 
@@ -95,7 +97,6 @@ public class BankAccountServiceImp implements BankAccountService {
 
     public BigDecimal CountTotalOutgoingAmountByCustomerId(Long customerId){
         List<BankAccount> bankAccountList = bankAccoutRepository.findAllBankAccountByCustomerId(customerId);
-        BigDecimal totalIncomingAmount = BigDecimal.ZERO;
         BigDecimal totalOutgoingAmount = BigDecimal.ZERO;
         for (BankAccount bankAccount : bankAccountList) {
             List<Transaction> transactionList = transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
@@ -116,6 +117,27 @@ public class BankAccountServiceImp implements BankAccountService {
         }
         return balance;
     }
+
+    public String generateIban(){
+        String iban = "";
+        int ibanLength = 7;
+        String characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder();
+        builder.append("NLXXXRABO");
+
+        for (int i = 0; i < ibanLength; i++) {
+            int randomIndex = random.nextInt(characterSet.length());
+            builder.append(characterSet.charAt(randomIndex));
+        }
+        iban = builder.toString();
+        return iban;
+
+    }
+
+
+
+
 
 
 

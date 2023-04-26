@@ -25,11 +25,13 @@ public class BankAccount {
     private BigDecimal balance;
 
 
-
-    @JsonIgnoreProperties("bankAccount")
-    @JsonIgnore
     @Column(name = "customer_id")
     private Long customerId;
+
+    @Column
+    private String accountType;
+
+
 
     public Long getCustomerId() {
         return customerId;
@@ -50,11 +52,12 @@ public class BankAccount {
 
     public BankAccount(){}
 
-    public BankAccount(Long bankAccountId, String iban, BigDecimal balance, Long customerId){
+    public BankAccount(Long bankAccountId, String iban, BigDecimal balance, Long customerId, String acountType){
         this.bankAccountId = bankAccountId;
         this.iban = iban;
         this.balance = balance;
         this.customerId = customerId;
+        this.accountType = accountType;
     }
 
 
@@ -90,4 +93,13 @@ public class BankAccount {
     public void setTransactionList(List<Transaction> transactionList) {
         this.transactionList = transactionList;
     }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
 }

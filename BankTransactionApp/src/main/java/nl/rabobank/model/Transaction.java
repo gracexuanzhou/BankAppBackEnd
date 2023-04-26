@@ -44,11 +44,16 @@ public class Transaction {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "category")
+    private String category;
+
+
+
     public Transaction(){
     }
 
     public Transaction(Long id, BigDecimal incomingAmount, BigDecimal outgoingAmount, LocalDateTime date,
-                       Long bankAccountId, Long categoryId, String description){
+                       Long bankAccountId, Long categoryId, String description, String category){
         this.id = id;
         this.incomingAmount = incomingAmount;
         this.outgoingAmount = outgoingAmount;
@@ -56,8 +61,16 @@ public class Transaction {
         this.bankAccountId = bankAccountId;
         this.categoryId = categoryId;
         this.description = description;
+        this.category = category;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     public String getDescription() {
         return description;
     }
