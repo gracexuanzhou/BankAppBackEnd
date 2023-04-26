@@ -33,12 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new InvalidPropertyState("id does not have to be set for transaction");
         }
         addTransactionToBankAccount(transaction);
-        if(transaction.getDescription()!=null){
-            categorizeTransaction(transaction);
-        }
-        else {
-            transaction.setCategoryId(8L);
-        }
+        categorizeTransaction(transaction);
         return transactionRepository.save(transaction);
     }
     @Override
@@ -106,33 +101,41 @@ public class TransactionServiceImpl implements TransactionService {
         if (isTransport) {
             Categories category = categoryRepository.findByNameIgnoreCase("transport");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isEntertainment){
+        else if(isEntertainment){
             Categories category = categoryRepository.findByNameIgnoreCase("entertainment");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isDining){
+        else if(isDining){
             Categories category = categoryRepository.findByNameIgnoreCase("dining");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isGroceries){
+        else if(isGroceries){
             Categories category = categoryRepository.findByNameIgnoreCase("groceries");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isShopping){
+        else if(isShopping){
             Categories category = categoryRepository.findByNameIgnoreCase("shopping");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isHousingExpenses){
+        else if(isHousingExpenses){
             Categories category = categoryRepository.findByNameIgnoreCase("housing Expenses");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
-        if(isSalary) {
+        else if(isSalary) {
             Categories category = categoryRepository.findByNameIgnoreCase("salary");
             transaction.setCategoryId(category.getCategoryId());
+            transaction.setCategory(category.getName());
         }
         else {
             transaction.setCategoryId(8L);
+            transaction.setCategory("Others");
         }
     }
 
@@ -141,7 +144,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));
         if (transaction.getIncomingAmount() != null) {
             bankAccount.setBalance(bankAccount.getBalance().add(transaction.getIncomingAmount()));
-        } else if (transaction.getOutgoingAmount() != null) {
+        }
+        if (transaction.getOutgoingAmount() != null) {
             bankAccount.setBalance(bankAccount.getBalance().subtract(transaction.getOutgoingAmount()));
         }
         return bankAccountRepository.save(bankAccount);
@@ -151,5 +155,7 @@ public class TransactionServiceImpl implements TransactionService {
         BankAccount bankAccount = bankAccountRepository.findById(bankAccountId).orElseThrow(() -> new InvalidPropertyState("The bankaccount or transaction is not found"));;
         return transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
     }
+
+
 }
 
