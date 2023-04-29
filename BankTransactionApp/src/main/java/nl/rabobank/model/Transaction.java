@@ -47,13 +47,17 @@ public class Transaction {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "single_co2_amount")
+    private BigDecimal sigleCo2Amount;
+
 
 
     public Transaction(){
     }
 
     public Transaction(Long id, BigDecimal incomingAmount, BigDecimal outgoingAmount, LocalDateTime date,
-                       Long bankAccountId, Long categoryId, String description, String category){
+                       Long bankAccountId, Long categoryId, String description, String category, BigDecimal
+                       sigleCo2Amount){
         this.id = id;
         this.incomingAmount = incomingAmount;
         this.outgoingAmount = outgoingAmount;
@@ -62,6 +66,7 @@ public class Transaction {
         this.categoryId = categoryId;
         this.description = description;
         this.category = category;
+        this.sigleCo2Amount = sigleCo2Amount;
     }
 
     public String getCategory() {
@@ -125,5 +130,13 @@ public class Transaction {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public BigDecimal getSigleCo2Amount() {
+        return sigleCo2Amount;
+    }
+
+    public void setSigleCo2Amount(BigDecimal sigleCo2Amount) {
+        this.sigleCo2Amount = sigleCo2Amount;
     }
 }
