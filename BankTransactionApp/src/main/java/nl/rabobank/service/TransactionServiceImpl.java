@@ -3,9 +3,11 @@ package nl.rabobank.service;
 import nl.rabobank.InvalidPropertyState;
 import nl.rabobank.model.BankAccount;
 import nl.rabobank.model.Categories;
+import nl.rabobank.model.FootPrintCo2;
 import nl.rabobank.model.Transaction;
 import nl.rabobank.repository.BankAccountRepository;
 import nl.rabobank.repository.CategoryRepository;
+import nl.rabobank.repository.FootPrintCo2Repository;
 import nl.rabobank.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,23 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    FootPrintCo2Repository footPrintCo2Repository;
+
+    private BigDecimal groceriesCo2 = new BigDecimal(0.05);
+
+    private BigDecimal diningCo2 = new BigDecimal(0.08);
+
+    private BigDecimal transportCo2 = new BigDecimal(0.05);
+
+    private BigDecimal shoppingCo2 = new BigDecimal(0.03);
+
+    private BigDecimal housingCo2 = new BigDecimal(0.06);
+
+    private BigDecimal entertainmentCo2 = new BigDecimal(0.01);
+
+    private BigDecimal othersCo2 = new BigDecimal(0.01);
 
 
     @Override
@@ -70,6 +89,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     public void categorizeTransaction(Transaction transaction) {
         String description = transaction.getDescription().toLowerCase();
+        BankAccount bankAccount = bankAccountRepository.findById(transaction.getBankAccountId()).
+                orElseThrow();
 
         boolean isTransport = Arrays.asList("car", "ov", "bus","uber","ns","klm","skyscanner").stream()
                 .anyMatch(keyword -> description.contains(keyword));
@@ -100,42 +121,52 @@ public class TransactionServiceImpl implements TransactionService {
 
         if (isTransport) {
             Categories category = categoryRepository.findByNameIgnoreCase("transport");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,transportCo2);
+           // updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+
+
         }
+
         else if(isEntertainment){
             Categories category = categoryRepository.findByNameIgnoreCase("entertainment");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,entertainmentCo2);
+            //updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
         else if(isDining){
             Categories category = categoryRepository.findByNameIgnoreCase("dining");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,diningCo2);
+            //updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
         else if(isGroceries){
             Categories category = categoryRepository.findByNameIgnoreCase("groceries");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,groceriesCo2);
+            //updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
         else if(isShopping){
             Categories category = categoryRepository.findByNameIgnoreCase("shopping");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,shoppingCo2);
+           // updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
         else if(isHousingExpenses){
             Categories category = categoryRepository.findByNameIgnoreCase("housing Expenses");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,housingCo2);
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+           // updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
         else if(isSalary) {
             Categories category = categoryRepository.findByNameIgnoreCase("salary");
-            transaction.setCategoryId(category.getCategoryId());
-            transaction.setCategory(category.getName());
+            setTransactionCategory(category,transaction,BigDecimal.valueOf(0));
         }
         else {
-            transaction.setCategoryId(8L);
-            transaction.setCategory("Others");
+            Categories category = categoryRepository.findByNameIgnoreCase("others");
+            setTransactionCategory(category,transaction,othersCo2);
+            updateFootPrint(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
+            //updateCo2Value(bankAccount.getCustomerId(), category.getCategoryId(), transaction.getSigleCo2Amount());
         }
     }
 
@@ -156,6 +187,25 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findAllTransactionByBankAccountId(bankAccount.getBankAccountId());
     }
 
+    public void setTransactionCategory(Categories category, Transaction transaction,BigDecimal hardcodeCo2Value){
+        transaction.setCategoryId(category.getCategoryId());
+        transaction.setCategory(category.getName());
+        if (transaction.getOutgoingAmount()!=null) {
+            transaction.setSigleCo2Amount(transaction.getOutgoingAmount().multiply(hardcodeCo2Value));
+        }
+    }
+
+    public void updateFootPrint(Long customerId, Long categoryId, BigDecimal newCo2Value){
+        List<FootPrintCo2> footPrintCo2s = footPrintCo2Repository.findFootPrintCo2ByCustomerId(customerId);
+
+        for(FootPrintCo2 footPrintCo2: footPrintCo2s){
+            if(footPrintCo2.getCategoryId() == categoryId){
+                footPrintCo2.setFootprintco2(newCo2Value.add(footPrintCo2.getFootprintco2()));
+                footPrintCo2Repository.save(footPrintCo2);
+            }
+        }
+
+    }
 
 }
 
