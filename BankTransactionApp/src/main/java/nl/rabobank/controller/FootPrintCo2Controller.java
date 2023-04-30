@@ -32,7 +32,6 @@ public class FootPrintCo2Controller {
    public List<FootPrintCo2> getFootPrintCo2ByCustomerId(@PathVariable Long customerId) {
       List<FootPrintCo2> footPrintCo2List = footPrintCo2Repository.findFootPrintCo2ByCustomerId(customerId);
 
-      // Sort the list in descending order based on footprintco2 value
       footPrintCo2List.sort(Comparator.comparing(FootPrintCo2::getFootprintco2).reversed());
 
       return footPrintCo2List;
