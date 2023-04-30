@@ -9,4 +9,6 @@ public interface FootPrintCo2Repository extends JpaRepository<FootPrintCo2,Long>
 
     List<FootPrintCo2> findFootPrintCo2ByCustomerId(Long customerId);
 
+    List<FootPrintCo2> findAll();
+
 }

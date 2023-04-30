@@ -1,10 +1,13 @@
 package nl.rabobank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity(name = "footprintco2")
 @Table(name = "footprintCo2")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class FootPrintCo2 {
 
 
